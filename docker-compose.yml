@@ -1,0 +1,28 @@
+version: '3.4'
+services:
+  synergy.landing.api:  
+    build:
+      context: .
+      dockerfile: ./Synergy.Landing.API/Dockerfile  
+    ports:
+     - 80:80
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      
+      ConnectionStrings__DB: "UserID=admin;Password=admin;Host=postgres-node;Port=5432;Database=postgres;" 
+      DB__RunMigrations: "true"
+
+      security__DevLogin: "true"
+      security__SecretKey: "q3nhLzZmKcAg92wjZNPbDz4db9yELLzK"
+
+    depends_on:
+      - "postgres-node"
+
+  postgres-node:
+    image: postgres
+    container_name: postgres-node
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
